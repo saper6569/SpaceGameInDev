@@ -15,11 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.playper3.space.Main;
 
 public class MainMenu implements Screen {
-
-    Main main;
 
     private Stage stage;
     private Music menuSong;
@@ -27,6 +24,9 @@ public class MainMenu implements Screen {
     private TextureRegion playTextureRegion;
     private TextureRegionDrawable playDrawable;
     private ImageButton play;
+
+    private int count;
+    private int countSec;
 
     private OrthographicCamera camera;
     private ExtendViewport viewport;
@@ -57,10 +57,16 @@ public class MainMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen1());
+                if (menuSong.isPlaying()) {
+                    menuSong.stop();
+                }
             }
         });
 
         stage.addActor(play);
+
+        count = 0;
+        countSec = 0;
     }
     @Override
     public void render(float delta) {
@@ -69,6 +75,17 @@ public class MainMenu implements Screen {
 
         stage.act();
         stage.draw();
+        if (count == 60) {
+            countSec++;
+        }
+        else if (countSec == 30) {
+            menuSong.play();
+        }
+        else if (countSec % 520 == 0) {
+            menuSong.play();
+        }
+
+        count ++;
     }
 
     @Override
@@ -95,6 +112,7 @@ public class MainMenu implements Screen {
     public void dispose() {
         stage.dispose();
         playTexture.dispose();
+        menuSong.dispose();
 
     }
 }

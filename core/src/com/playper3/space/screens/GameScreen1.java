@@ -143,8 +143,8 @@ public class GameScreen1 implements Screen {
             elapsed_time += Gdx.graphics.getDeltaTime();
             spriteBatch.draw(def.getKeyFrame(elapsed_time), origin_x, origin_y);
         }
-/*
         stepWorld();
+        /*
         debugRenderer.render(world, camera.combined);
         Body groundBody = world.createBody(bodyDef);
         PolygonShape groundBox = new PolygonShape();
