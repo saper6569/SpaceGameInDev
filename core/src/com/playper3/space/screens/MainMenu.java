@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MainMenu implements Screen {
 
+    //game resources
     private Stage stage;
     private Music menuSong;
     private Texture playTexture;
@@ -25,17 +26,21 @@ public class MainMenu implements Screen {
     private TextureRegionDrawable playDrawable;
     private ImageButton play;
 
+    //frame counter
     private int count;
     private int countSec;
 
+    //camera
     private OrthographicCamera camera;
     private ExtendViewport viewport;
 
     @Override
     public void show() {
+        //stage for game resources
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
+        //resource instances
         playTexture = new Texture("testButton.png");
         menuSong = Gdx.audio.newMusic(Gdx.files.internal("C418 - 0x10c.mp3"));
 
@@ -53,6 +58,7 @@ public class MainMenu implements Screen {
         play = new ImageButton(playDrawable);
         play.setPosition(origin_x, origin_y);
 
+        //play button listener switches screen to first game screen
         play.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -70,19 +76,27 @@ public class MainMenu implements Screen {
     }
     @Override
     public void render(float delta) {
+        //screen render functions
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act();
         stage.draw();
+
+        //music
         if (count == 60) {
             countSec++;
+            count = 0;
         }
         else if (countSec == 30) {
             menuSong.play();
         }
         else if (countSec % 520 == 0) {
             menuSong.play();
+        }
+        else if (countSec == 2147483645) {
+            count = 0;
+            countSec = 0;
         }
 
         count ++;

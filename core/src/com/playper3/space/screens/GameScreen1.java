@@ -13,11 +13,13 @@ import com.playper3.space.actions.PlayerMovementHandler;
 
 public class GameScreen1 implements Screen {
 
+    //player variables
     private static float FRAME_DURATION = 0.4f;
     private float elapsed_time = 0.0f;
     private int origin_x1, origin_y1, origin_x, origin_y;
     private float PLAYER_SPEED = 200.0f;
 
+    //game resources
     private TextureAtlas textureAtlas;
     private Texture texture;
 
@@ -32,6 +34,7 @@ public class GameScreen1 implements Screen {
     private OrthographicCamera camera;
     private ExtendViewport viewport;
 
+    //B2D setup
     private World world;
     private Box2DDebugRenderer debugRenderer;
 
@@ -45,8 +48,11 @@ public class GameScreen1 implements Screen {
 
     @Override
     public void show() {
+        //camera
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+
+        //game resources
         spriteBatch = new SpriteBatch();
 
         texture = new Texture("back1.png");
@@ -71,6 +77,7 @@ public class GameScreen1 implements Screen {
         origin_x1 = (Gdx.graphics.getWidth() - texture.getWidth()) / 2;
         origin_y1 = (Gdx.graphics.getHeight() - texture.getHeight()) / 2;
 
+        //B2D setup
         Box2D.init();
         world = new World(new Vector2(0, 0), true);
         debugRenderer = new Box2DDebugRenderer();
@@ -80,6 +87,7 @@ public class GameScreen1 implements Screen {
     }
 
     private void stepWorld() {
+        //B2D physics
         float delta = Gdx.graphics.getDeltaTime();
 
         accumulator += Math.min(delta, 0.25f);
@@ -96,6 +104,7 @@ public class GameScreen1 implements Screen {
         spriteBatch.begin();
         spriteBatch.draw(texture, origin_x1, origin_y1);
 
+        //player movement
         PlayerMovementHandler.movement();
 
         if (PlayerMovementHandler.movement() == "forward") {
@@ -143,6 +152,8 @@ public class GameScreen1 implements Screen {
             elapsed_time += Gdx.graphics.getDeltaTime();
             spriteBatch.draw(def.getKeyFrame(elapsed_time), origin_x, origin_y);
         }
+
+        //collisions/ physics
         stepWorld();
         /*
         debugRenderer.render(world, camera.combined);
