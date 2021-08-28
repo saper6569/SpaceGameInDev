@@ -104,6 +104,12 @@ public class GameScreen1 implements Screen {
         spriteBatch.begin();
         spriteBatch.draw(texture, origin_x1, origin_y1);
 
+        debugRenderer.render(world, camera.combined);
+        Body groundBody = world.createBody(bodyDef);
+        PolygonShape groundBox = new PolygonShape();
+        groundBox.setAsBox(camera.viewportWidth, 10.0f);
+        groundBody.createFixture(groundBox, 0.0f);
+
         //player movement
         PlayerMovementHandler.movement();
 
