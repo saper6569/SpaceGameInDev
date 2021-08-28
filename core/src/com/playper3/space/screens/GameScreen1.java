@@ -50,7 +50,7 @@ public class GameScreen1 implements Screen {
     public void show() {
         //camera
         camera = new OrthographicCamera();
-        viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+        viewport = new ExtendViewport(1920, 1080, camera);
 
         //game resources
         spriteBatch = new SpriteBatch();
@@ -71,14 +71,14 @@ public class GameScreen1 implements Screen {
         left = new Animation<TextureRegion>(FRAME_DURATION, leftFrames, Animation.PlayMode.LOOP);
 
         TextureRegion firstTexture = forwardFrames.first();
-        origin_x = (Gdx.graphics.getWidth()  - firstTexture.getRegionWidth())  / 2;
-        origin_y = (Gdx.graphics.getHeight() - firstTexture.getRegionHeight())/ 2;
+        origin_x = (1920  - firstTexture.getRegionWidth())  / 2;
+        origin_y = (1080 - firstTexture.getRegionHeight())/ 2;
 
-        origin_x1 = (Gdx.graphics.getWidth() - texture.getWidth()) / 2;
-        origin_y1 = (Gdx.graphics.getHeight() - texture.getHeight()) / 2;
+        origin_x1 = (1920 - texture.getWidth()) / 2;
+        origin_y1 = (1080 - texture.getHeight()) / 2;
 
         //B2D setup
-        Box2D.init();
+        //Box2D.init();
         world = new World(new Vector2(0, 0), true);
         debugRenderer = new Box2DDebugRenderer();
 
@@ -101,14 +101,9 @@ public class GameScreen1 implements Screen {
 
     @Override
     public void render(float delta) {
+        spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
         spriteBatch.draw(texture, origin_x1, origin_y1);
-
-        debugRenderer.render(world, camera.combined);
-        Body groundBody = world.createBody(bodyDef);
-        PolygonShape groundBox = new PolygonShape();
-        groundBox.setAsBox(camera.viewportWidth, 10.0f);
-        groundBody.createFixture(groundBox, 0.0f);
 
         //player movement
         PlayerMovementHandler.movement();
@@ -160,7 +155,7 @@ public class GameScreen1 implements Screen {
         }
 
         //collisions/ physics
-        stepWorld();
+        //stepWorld();
         /*
         debugRenderer.render(world, camera.combined);
         Body groundBody = world.createBody(bodyDef);
@@ -175,7 +170,6 @@ public class GameScreen1 implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        spriteBatch.setProjectionMatrix(camera.combined);
     }
 
     @Override
