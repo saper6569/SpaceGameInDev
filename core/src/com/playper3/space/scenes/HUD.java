@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.playper3.space.screens.GameScreen1;
+import com.playper3.space.screens.SetupVars;
 
 public class HUD {
 
@@ -20,9 +21,6 @@ public class HUD {
     private int hydration;
     private float health;
     private String room;
-    public static int PLAYER_X = 0;
-    public static int PLAYER_Y = 0;
-
     Label healthL;
     Label healthLabel;
     Label hungerL;
@@ -31,17 +29,15 @@ public class HUD {
     Label hydrationLabel;
     Label roomL;
     Label roomLabel;
-    Label locationL;
-    Label location;
 
     public HUD(SpriteBatch spriteBatch) {
 
-        viewport = new ExtendViewport(GameScreen1.WIDTH, GameScreen1.HEIGHT, new OrthographicCamera());
+        viewport = new ExtendViewport(SetupVars.WIDTH, SetupVars.HEIGHT, new OrthographicCamera());
 
         hunger = 10;
         hydration = 10;
         health = 20.0f;
-        room = "!!!!!!!!";
+        room = "Main";
 
 
         stage = new Stage(viewport, spriteBatch);
@@ -58,21 +54,17 @@ public class HUD {
         hydrationLabel = new Label(String.format("%02d", hydration), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         roomL = new Label ("ROOM", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         roomLabel = new Label (room, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        locationL = new Label ("LOCATION", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        location = new Label(String.format("%03d", PLAYER_X) + "," + String.format("%03d", PLAYER_Y), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
 
-        table.add(healthL).expandY().padTop(10);
-        table.add(hungerL).expandY().padTop(10);
-        table.add(hydrationL).expandY().padTop(10);
-        table.add(roomL).expandY().padTop(10);
-        table.add(location).expandY().padTop(10);
+        table.add(healthL).expandX().padTop(10);
+        table.add(hungerL).expandX().padTop(10);
+        table.add(hydrationL).expandX().padTop(10);
+        table.add(roomL).expandX().padTop(10);
 
         table.row();
-        table.add(healthLabel).expandY();
-        table.add(hungerLabel).expandY();
-        table.add(hydrationLabel).expandY();
-        table.add(roomLabel).expandY();
-        table.add(location).expandY();
+        table.add(healthLabel).expandX();
+        table.add(hungerLabel).expandX();
+        table.add(hydrationLabel).expandX();
+        table.add(roomLabel).expandX();
 
         stage.addActor(table);
     }

@@ -17,8 +17,6 @@ public class GameScreen1 implements Screen {
 
     private Main game;
     //Screen variables
-    public static final int WIDTH = 1920;
-    public static final int HEIGHT = 1080;
 
     //player variables
     private static float FRAME_DURATION = 0.4f;
@@ -58,7 +56,7 @@ public class GameScreen1 implements Screen {
 
         //camera
         camera = new OrthographicCamera();
-        viewport = new ExtendViewport(WIDTH, HEIGHT, camera);
+        viewport = new ExtendViewport(SetupVars.WIDTH, SetupVars.HEIGHT, camera);
 
         hud = new HUD(game.spriteBatch);
 
@@ -84,11 +82,11 @@ public class GameScreen1 implements Screen {
         left = new Animation<TextureRegion>(FRAME_DURATION, leftFrames, Animation.PlayMode.LOOP);
 
         TextureRegion firstTexture = forwardFrames.first();
-        origin_x = (WIDTH  - firstTexture.getRegionWidth())  / 2;
-        origin_y = (HEIGHT - firstTexture.getRegionHeight())/ 2;
+        origin_x = (SetupVars.WIDTH  - firstTexture.getRegionWidth())  / 2;
+        origin_y = (SetupVars.HEIGHT - firstTexture.getRegionHeight())/ 2;
 
-        origin_x1 = (WIDTH - texture.getWidth()) / 2;
-        origin_y1 = (HEIGHT - texture.getHeight()) / 2;
+        origin_x1 = (SetupVars.WIDTH - texture.getWidth()) / 2;
+        origin_y1 = (SetupVars.HEIGHT - texture.getHeight()) / 2;
 
         //B2D setup
         //Box2D.init();

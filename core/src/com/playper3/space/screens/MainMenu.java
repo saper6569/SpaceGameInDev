@@ -47,14 +47,14 @@ public class MainMenu implements Screen {
         playTexture = new Texture("testButton.png");
         menuSong = Gdx.audio.newMusic(Gdx.files.internal("C418 - 0x10c.mp3"));
 
-        int origin_x = (Gdx.graphics.getWidth() - playTexture.getWidth()) / 2;
-        int origin_y = (Gdx.graphics.getHeight() - playTexture.getHeight()) / 2;
+        int origin_x = (SetupVars.WIDTH - playTexture.getWidth()) / 2;
+        int origin_y = (SetupVars.HEIGHT - playTexture.getHeight()) / 2;
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
         camera = new OrthographicCamera();
-        viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+        viewport = new ExtendViewport(SetupVars.WIDTH, SetupVars.HEIGHT, camera);
 
         playTextureRegion = new TextureRegion(playTexture);
         playDrawable = new TextureRegionDrawable(playTextureRegion);

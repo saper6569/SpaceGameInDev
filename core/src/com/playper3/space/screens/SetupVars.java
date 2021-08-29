@@ -9,7 +9,7 @@ public class SetupVars extends ApplicationAdapter {
 
     public static int FPS = 60;
 
-    public static int WIDTH = 720;
-    public static int HEIGHT = 420;
+    public static int WIDTH = 1920;
+    public static int HEIGHT = 1080;
 
 }
