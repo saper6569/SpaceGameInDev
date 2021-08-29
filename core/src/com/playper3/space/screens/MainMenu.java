@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.playper3.space.Main;
 
 public class MainMenu implements Screen {
 
@@ -33,6 +34,8 @@ public class MainMenu implements Screen {
     //camera
     private OrthographicCamera camera;
     private ExtendViewport viewport;
+
+    private Main game;
 
     @Override
     public void show() {
@@ -62,7 +65,8 @@ public class MainMenu implements Screen {
         play.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen1());
+
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen1(game));
                 if (menuSong.isPlaying()) {
                     menuSong.stop();
                 }

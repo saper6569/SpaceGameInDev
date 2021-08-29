@@ -9,9 +9,16 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.math.Vector2;
+import com.playper3.space.Main;
 import com.playper3.space.actions.PlayerMovementHandler;
+import com.playper3.space.scenes.HUD;
 
 public class GameScreen1 implements Screen {
+
+    private Main game;
+    //Screen variables
+    public static final int WIDTH = 1920;
+    public static final int HEIGHT = 1080;
 
     //player variables
     private static float FRAME_DURATION = 0.4f;
@@ -29,10 +36,10 @@ public class GameScreen1 implements Screen {
     private Animation<TextureRegion> left;
     private Animation<TextureRegion> right;
 
-    private SpriteBatch spriteBatch;
-
     private OrthographicCamera camera;
     private ExtendViewport viewport;
+
+    private HUD hud;
 
     //B2D setup
     private World world;
@@ -46,15 +53,21 @@ public class GameScreen1 implements Screen {
 
     private BodyDef bodyDef;
 
-    @Override
-    public void show() {
+    public GameScreen1(Main game) {
+        this.game = game;
+
         //camera
         camera = new OrthographicCamera();
-        viewport = new ExtendViewport(1920, 1080, camera);
+        viewport = new ExtendViewport(WIDTH, HEIGHT, camera);
 
+        hud = new HUD(game.spriteBatch);
+
+
+    }
+
+    @Override
+    public void show() {
         //game resources
-        spriteBatch = new SpriteBatch();
-
         texture = new Texture("back1.png");
 
         textureAtlas = new TextureAtlas("playerSprite.txt");
@@ -71,11 +84,11 @@ public class GameScreen1 implements Screen {
         left = new Animation<TextureRegion>(FRAME_DURATION, leftFrames, Animation.PlayMode.LOOP);
 
         TextureRegion firstTexture = forwardFrames.first();
-        origin_x = (1920  - firstTexture.getRegionWidth())  / 2;
-        origin_y = (1080 - firstTexture.getRegionHeight())/ 2;
+        origin_x = (WIDTH  - firstTexture.getRegionWidth())  / 2;
+        origin_y = (HEIGHT - firstTexture.getRegionHeight())/ 2;
 
-        origin_x1 = (1920 - texture.getWidth()) / 2;
-        origin_y1 = (1080 - texture.getHeight()) / 2;
+        origin_x1 = (WIDTH - texture.getWidth()) / 2;
+        origin_y1 = (HEIGHT - texture.getHeight()) / 2;
 
         //B2D setup
         //Box2D.init();
@@ -101,9 +114,9 @@ public class GameScreen1 implements Screen {
 
     @Override
     public void render(float delta) {
-        spriteBatch.setProjectionMatrix(camera.combined);
-        spriteBatch.begin();
-        spriteBatch.draw(texture, origin_x1, origin_y1);
+        game.spriteBatch.setProjectionMatrix(camera.combined);
+        game.spriteBatch.begin();
+        game.spriteBatch.draw(texture, origin_x1, origin_y1);
 
         //player movement
         PlayerMovementHandler.movement();
@@ -111,48 +124,50 @@ public class GameScreen1 implements Screen {
         if (PlayerMovementHandler.movement() == "forward") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
-                spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+                game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
                 origin_y1 -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
-            spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+            game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
             origin_y1 -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
 
         }
         else if (PlayerMovementHandler.movement() == "backward") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
-                spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+                game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
                 origin_y1 += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
-            spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+            game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
             origin_y1 += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
         }
         else if (PlayerMovementHandler.movement() == "right") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
-                spriteBatch.draw(right.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+                game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), origin_x, origin_y);
                 origin_x1 -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
-            spriteBatch.draw(right.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+            game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), origin_x, origin_y);
             origin_x1 -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
         }
         else if (PlayerMovementHandler.movement() == "left") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
-                spriteBatch.draw(left.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+                game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), origin_x, origin_y);
                 origin_x1 += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
-            spriteBatch.draw(left.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+            game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), origin_x, origin_y);
             origin_x1 += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
         }
         else {
             elapsed_time += Gdx.graphics.getDeltaTime();
-            spriteBatch.draw(def.getKeyFrame(elapsed_time), origin_x, origin_y);
+            game.spriteBatch.draw(def.getKeyFrame(elapsed_time), origin_x, origin_y);
         }
+
+        game.spriteBatch.end();
 
         //collisions/ physics
         //stepWorld();
@@ -163,8 +178,8 @@ public class GameScreen1 implements Screen {
         groundBox.setAsBox(camera.viewportWidth, 10.0f);
         groundBody.createFixture(groundBox, 0.0f);
 */
-        spriteBatch.end();
-
+        game.spriteBatch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
     }
 
     @Override
