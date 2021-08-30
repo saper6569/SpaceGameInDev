@@ -24,7 +24,6 @@ public class HUD {
     private BitmapFont font;
     private Label.LabelStyle labelStyle;
 
-    private Texture hudBack;
     private Skin skin;
 
     private FreeTypeFontGenerator generator;
@@ -56,9 +55,6 @@ public class HUD {
         labelStyle = new Label.LabelStyle(font, Color.BLACK);
 
         skin = new Skin(Gdx.files.internal("Shade_UI_Skin/shadeui/uiskin.json"));
-
-        hudBack = new Texture("HUD.png");
-        Image image = new Image(hudBack);
 
         hunger = 10;
         hydration = 10;
