@@ -3,11 +3,14 @@ package com.playper3.space.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -20,6 +23,9 @@ public class HUD {
 
     private BitmapFont font;
     private Label.LabelStyle labelStyle;
+
+    private Texture hudBack;
+    private Skin skin;
 
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
@@ -49,6 +55,11 @@ public class HUD {
         font = generator.generateFont(fontParameter);
         labelStyle = new Label.LabelStyle(font, Color.BLACK);
 
+        skin = new Skin(Gdx.files.internal("Shade_UI_Skin/shadeui/uiskin.json"));
+
+        hudBack = new Texture("HUD.png");
+        Image image = new Image(hudBack);
+
         hunger = 10;
         hydration = 10;
         health = 20.0f;
@@ -61,6 +72,9 @@ public class HUD {
         table.top().left();
         table.setFillParent(true);
 
+        Table hudTable = new Table();
+        hudTable.setSize(250,350);
+
         healthL = new Label (" HEALTH ", labelStyle);
         healthLabel = new Label(String.format("%03f", health), labelStyle);
         hungerL = new Label (" HUNGER ", labelStyle);
@@ -70,21 +84,24 @@ public class HUD {
         roomL = new Label (" ROOM ", labelStyle);
         roomLabel = new Label (room, labelStyle);
 
-        table.add(healthL).padTop(10);
-        table.row();
-        table.add(healthLabel);
-        table.row();
-        table.add(hungerL).padTop(10);
-        table.row();
-        table.add(hungerLabel);
-        table.row();
-        table.add(hydrationL).padTop(10);
-        table.row();
-        table.add(hydrationLabel);
-        table.row();
-        table.add(roomL).padTop(10);
-        table.row();
-        table.add(roomLabel);
+        hudTable.setBackground(skin.getDrawable("dialogDim"));
+        hudTable.add(healthL).padTop(10);
+        hudTable.row();
+        hudTable.add(healthLabel);
+        hudTable.row();
+        hudTable.add(hungerL).padTop(10);
+        hudTable.row();
+        hudTable.add(hungerLabel);
+        hudTable.row();
+        hudTable.add(hydrationL).padTop(10);
+        hudTable.row();
+        hudTable.add(hydrationLabel);
+        hudTable.row();
+        hudTable.add(roomL).padTop(10);
+        hudTable.row();
+        hudTable.add(roomLabel);
+
+        table.add(hudTable);
 
         stage.addActor(table);
     }
