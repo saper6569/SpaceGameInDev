@@ -12,7 +12,6 @@ public class DesktopLauncher {
 		//config.fullscreen = true;
 		config.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
 		config.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
-		config.resizable = false;
 		new LwjglApplication(new Main(), config);
 	}
 }
