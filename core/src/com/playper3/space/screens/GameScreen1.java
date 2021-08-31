@@ -2,9 +2,14 @@ package com.playper3.space.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -27,6 +32,9 @@ public class GameScreen1 implements Screen {
     //game resources
     private TextureAtlas textureAtlas;
     private Texture texture;
+    private TmxMapLoader mapLoader;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer mapRenderer;
 
     private Animation<TextureRegion> def;
     private Animation<TextureRegion> forward;
@@ -60,11 +68,6 @@ public class GameScreen1 implements Screen {
 
         hud = new HUD(game.spriteBatch);
 
-
-    }
-
-    @Override
-    public void show() {
         //game resources
         texture = new Texture("back1.png");
 
@@ -87,6 +90,13 @@ public class GameScreen1 implements Screen {
 
         origin_x1 = (SetupVars.WIDTH - texture.getWidth()) / 2;
         origin_y1 = (SetupVars.HEIGHT - texture.getHeight()) / 2;
+
+        mapLoader = new TmxMapLoader();
+        map = mapLoader.load("spaceShip.tmx");
+        mapRenderer = new OrthogonalTiledMapRenderer(map);
+        camera.position.set(SetupVars.WIDTH / 2, SetupVars.HEIGHT / 2, 0);
+
+        mapRenderer.setView(camera);
 
         //B2D setup
         //Box2D.init();
@@ -111,10 +121,21 @@ public class GameScreen1 implements Screen {
     }
 
     @Override
+    public void show() {
+    }
+
+    @Override
     public void render(float delta) {
+        camera.update();
+
+        //Clear the game screen with Black
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        mapRenderer.render();
+
         game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
-        game.spriteBatch.draw(texture, origin_x1, origin_y1);
 
         //player movement
         PlayerMovementHandler.movement();
@@ -123,22 +144,22 @@ public class GameScreen1 implements Screen {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
                 game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
-                origin_y1 -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
+                camera.position.y -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
             game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
-            origin_y1 -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
+            camera.position.y -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
 
         }
         else if (PlayerMovementHandler.movement() == "backward") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
                 game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
-                origin_y1 += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
+                camera.position.y += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
             game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
-            origin_y1 += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
+            camera.position.y += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
         }
         else if (PlayerMovementHandler.movement() == "right") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
@@ -154,11 +175,11 @@ public class GameScreen1 implements Screen {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
                 game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), origin_x, origin_y);
-                origin_x1 += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
+                camera.position.x += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
             game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), origin_x, origin_y);
-            origin_x1 += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
+            camera.position.x += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
         }
         else {
             elapsed_time += Gdx.graphics.getDeltaTime();
