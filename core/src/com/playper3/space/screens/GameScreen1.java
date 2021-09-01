@@ -89,7 +89,7 @@ public class GameScreen1 implements Screen {
         map = mapLoader.load("spaceShip.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
-        camera.position.set(SetupVars.WIDTH / 2, SetupVars.HEIGHT / 2, 0);
+        camera.position.set(100, 100, 0);
 
         //B2D setup
         //Box2D.init();
@@ -120,8 +120,6 @@ public class GameScreen1 implements Screen {
     public void update(float dt){
         camera.update();
         //tell our renderer to draw only what our camera can see in our game world.
-        mapRenderer.setView(camera);
-        mapRenderer.render();
     }
 
     @Override
@@ -130,7 +128,11 @@ public class GameScreen1 implements Screen {
 
         //Clear the game screen with Black
         Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        mapRenderer.setView(camera);
+        mapRenderer.render();
 
         game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
