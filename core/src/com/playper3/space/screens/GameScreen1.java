@@ -3,7 +3,6 @@ package com.playper3.space.screens;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapRenderer;
@@ -28,10 +27,10 @@ public class GameScreen1 implements Screen {
     private float elapsed_time = 0.0f;
     private int origin_x, origin_y;
     private float PLAYER_SPEED = 200.0f;
+    private float PLAYER_SPEED_SPRINT = 220.0f;
 
     //game resources
     private TextureAtlas textureAtlas;
-    private Texture texture;
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -69,7 +68,6 @@ public class GameScreen1 implements Screen {
         hud = new HUD(game.spriteBatch);
 
         //game resources
-        texture = new Texture("back1.png");
 
         textureAtlas = new TextureAtlas("playerSprite.txt");
         Array<TextureAtlas.AtlasRegion> defaultFrames = textureAtlas.findRegions("default");
@@ -91,9 +89,8 @@ public class GameScreen1 implements Screen {
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("spaceShip.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
-        camera.position.set(SetupVars.WIDTH / 2, SetupVars.HEIGHT / 2, 0);
 
-        mapRenderer.setView(camera);
+        camera.position.set(SetupVars.WIDTH / 2, SetupVars.HEIGHT / 2, 0);
 
         //B2D setup
         //Box2D.init();
@@ -121,15 +118,20 @@ public class GameScreen1 implements Screen {
     public void show() {
     }
 
+    public void update(float dt){
+        camera.update();
+        //tell our renderer to draw only what our camera can see in our game world.
+        mapRenderer.setView(camera);
+        mapRenderer.render();
+    }
+
     @Override
     public void render(float delta) {
-        camera.update();
+        update(delta);
 
         //Clear the game screen with Black
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        mapRenderer.render();
 
         game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
@@ -140,19 +142,18 @@ public class GameScreen1 implements Screen {
         if (PlayerMovementHandler.movement() == "forward") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
+                camera.position.y -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED_SPRINT;
                 game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
-                camera.position.y -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
             game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
             camera.position.y -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
-
         }
         else if (PlayerMovementHandler.movement() == "backward") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
-                game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
                 camera.position.y += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
+                game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
             game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
@@ -161,8 +162,8 @@ public class GameScreen1 implements Screen {
         else if (PlayerMovementHandler.movement() == "right") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
-                game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
                 camera.position.x -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
+                game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
             game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
@@ -171,8 +172,8 @@ public class GameScreen1 implements Screen {
         else if (PlayerMovementHandler.movement() == "left") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
-                game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
                 camera.position.x += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
+                game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
             game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
@@ -185,6 +186,9 @@ public class GameScreen1 implements Screen {
 
         game.spriteBatch.end();
 
+        game.spriteBatch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
+
         //collisions/ physics
         //stepWorld();
         /*
@@ -194,13 +198,12 @@ public class GameScreen1 implements Screen {
         groundBox.setAsBox(camera.viewportWidth, 10.0f);
         groundBody.createFixture(groundBox, 0.0f);
 */
-        game.spriteBatch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, true);
+        viewport.update(width, height);
     }
 
     @Override
@@ -221,7 +224,10 @@ public class GameScreen1 implements Screen {
     @Override
     public void dispose() {
         textureAtlas.dispose();
-        texture.dispose();
         world.dispose();
+        map.dispose();
+        mapRenderer.dispose();
+        world.dispose();
+        hud.dispose();
     }
 }
