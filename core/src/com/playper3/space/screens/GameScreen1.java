@@ -26,7 +26,7 @@ public class GameScreen1 implements Screen {
     //player variables
     private static float FRAME_DURATION = 0.4f;
     private float elapsed_time = 0.0f;
-    private int origin_x1, origin_y1, origin_x, origin_y;
+    private int origin_x, origin_y;
     private float PLAYER_SPEED = 200.0f;
 
     //game resources
@@ -85,11 +85,8 @@ public class GameScreen1 implements Screen {
         left = new Animation<TextureRegion>(FRAME_DURATION, leftFrames, Animation.PlayMode.LOOP);
 
         TextureRegion firstTexture = forwardFrames.first();
-        origin_x = (SetupVars.WIDTH  - firstTexture.getRegionWidth())  / 2;
-        origin_y = (SetupVars.HEIGHT - firstTexture.getRegionHeight())/ 2;
-
-        origin_x1 = (SetupVars.WIDTH - texture.getWidth()) / 2;
-        origin_y1 = (SetupVars.HEIGHT - texture.getHeight()) / 2;
+        origin_x = firstTexture.getRegionWidth()  / 2;
+        origin_y = firstTexture.getRegionHeight() / 2;
 
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("spaceShip.tmx");
@@ -143,47 +140,47 @@ public class GameScreen1 implements Screen {
         if (PlayerMovementHandler.movement() == "forward") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
-                game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+                game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
                 camera.position.y -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+            game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
             camera.position.y -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
 
         }
         else if (PlayerMovementHandler.movement() == "backward") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
-                game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+                game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
                 camera.position.y += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+            game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
             camera.position.y += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
         }
         else if (PlayerMovementHandler.movement() == "right") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
-                game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), origin_x, origin_y);
-                origin_x1 -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
+                game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
+                camera.position.x -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), origin_x, origin_y);
-            origin_x1 -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
+            game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
+            camera.position.x -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
         }
         else if (PlayerMovementHandler.movement() == "left") {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
-                game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+                game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
                 camera.position.x += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
             }
             elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), origin_x, origin_y);
+            game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
             camera.position.x += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
         }
         else {
             elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(def.getKeyFrame(elapsed_time), origin_x, origin_y);
+            game.spriteBatch.draw(def.getKeyFrame(elapsed_time), camera.position.x - origin_x, camera.position.y - origin_y);
         }
 
         game.spriteBatch.end();
