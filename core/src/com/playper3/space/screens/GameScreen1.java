@@ -5,9 +5,12 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -18,15 +21,14 @@ import com.playper3.space.scenes.HUD;
 public class GameScreen1 implements Screen {
 
     private Main game;
-    //Screen variables
 
     //player variables
     private static float FRAME_DURATION = 0.4f;
-    private static float SPRINT_FRAME_DURATION = 0.3f;
+    private static float SPRINT_FRAME_DURATION = 0.2f;
     private float elapsed_time = 0.0f;
     private int origin_x, origin_y;
-    private float PLAYER_SPEED = 50.0f;
-    private float PLAYER_SPEED_SPRINT = 80.0f;
+    private float PLAYER_SPEED = 40.0f;
+    private float PLAYER_SPEED_SPRINT = 60.0f;
 
     //game resources
     private TextureAtlas textureAtlas;
@@ -99,7 +101,7 @@ public class GameScreen1 implements Screen {
         map = mapLoader.load("spaceShip.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
-        camera.position.set(100, 100, 0);
+        camera.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
 
         //B2D setup
         //Box2D.init();
@@ -108,6 +110,58 @@ public class GameScreen1 implements Screen {
 
         bodyDef = new BodyDef();
         bodyDef.position.set(new Vector2(0, 10));
+        PolygonShape shape = new PolygonShape();
+        FixtureDef fDef = new FixtureDef();
+        Body body;
+
+        //upWalls
+        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            bodyDef.type = BodyDef.BodyType.StaticBody;
+            bodyDef.position.set(rectangle.getX() + rectangle.getWidth() / 2, rectangle.getY() + rectangle.getHeight());
+
+            body = world.createBody(bodyDef);
+            shape.setAsBox(rectangle.getWidth() / 2, rectangle.getHeight() / 2);
+            fDef.shape = shape;
+            body.createFixture(fDef);
+        }
+
+        //downWalls
+        for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            bodyDef.type = BodyDef.BodyType.StaticBody;
+            bodyDef.position.set(rectangle.getX() + rectangle.getWidth() / 2, rectangle.getY() + rectangle.getHeight());
+
+            body = world.createBody(bodyDef);
+            shape.setAsBox(rectangle.getWidth() / 2, rectangle.getHeight() / 2);
+            fDef.shape = shape;
+            body.createFixture(fDef);
+        }
+
+        //leftWalls
+        for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            bodyDef.type = BodyDef.BodyType.StaticBody;
+            bodyDef.position.set(rectangle.getX() + rectangle.getWidth() / 2, rectangle.getY() + rectangle.getHeight());
+
+            body = world.createBody(bodyDef);
+            shape.setAsBox(rectangle.getWidth() / 2, rectangle.getHeight() / 2);
+            fDef.shape = shape;
+            body.createFixture(fDef);
+        }
+
+        //rightWalls
+        for (MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            bodyDef.type = BodyDef.BodyType.StaticBody;
+            bodyDef.position.set(rectangle.getX() + rectangle.getWidth() / 2, rectangle.getY() + rectangle.getHeight());
+
+            body = world.createBody(bodyDef);
+            shape.setAsBox(rectangle.getWidth() / 2, rectangle.getHeight() / 2);
+            fDef.shape = shape;
+            body.createFixture(fDef);
+        }
+
     }
 
     private void stepWorld() {
@@ -143,6 +197,7 @@ public class GameScreen1 implements Screen {
 
         mapRenderer.setView(camera);
         mapRenderer.render();
+        debugRenderer.render(world, camera.combined);
 
         game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
@@ -210,7 +265,7 @@ public class GameScreen1 implements Screen {
         //collisions/ physics
         //stepWorld();
         /*
-        debugRenderer.render(world, camera.combined);
+
         Body groundBody = world.createBody(bodyDef);
         PolygonShape groundBox = new PolygonShape();
         groundBox.setAsBox(camera.viewportWidth, 10.0f);
