@@ -50,7 +50,7 @@ public class HUD implements Disposable {
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("upheaval/upheavtt.ttf"));
         fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        fontParameter.size = 40;
+        fontParameter.size = 9;
 
         font = generator.generateFont(fontParameter);
         labelStyle = new Label.LabelStyle(font, Color.BLACK);

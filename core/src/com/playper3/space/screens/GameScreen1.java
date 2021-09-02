@@ -25,8 +25,8 @@ public class GameScreen1 implements Screen {
     private static float FRAME_DURATION = 0.4f;
     private float elapsed_time = 0.0f;
     private int origin_x, origin_y;
-    private float PLAYER_SPEED = 200.0f;
-    private float PLAYER_SPEED_SPRINT = 220.0f;
+    private float PLAYER_SPEED = 50.0f;
+    private float PLAYER_SPEED_SPRINT = 80.0f;
 
     //game resources
     private TextureAtlas textureAtlas;
@@ -68,7 +68,7 @@ public class GameScreen1 implements Screen {
 
         //game resources
 
-        textureAtlas = new TextureAtlas("playerSprite.txt");
+        textureAtlas = new TextureAtlas("playerSprite.png.txt");
         Array<TextureAtlas.AtlasRegion> defaultFrames = textureAtlas.findRegions("default");
         Array<TextureAtlas.AtlasRegion> forwardFrames = textureAtlas.findRegions("backward");
         Array<TextureAtlas.AtlasRegion> backwardFrames = textureAtlas.findRegions("forward");
@@ -76,10 +76,10 @@ public class GameScreen1 implements Screen {
         Array<TextureAtlas.AtlasRegion> leftFrames = textureAtlas.findRegions("left");
 
         def = new Animation<TextureRegion>(FRAME_DURATION, defaultFrames, Animation.PlayMode.LOOP);
-        forward = new Animation<TextureRegion>(FRAME_DURATION, forwardFrames, Animation.PlayMode.LOOP);
-        backward = new Animation<TextureRegion>(FRAME_DURATION, backwardFrames, Animation.PlayMode.LOOP);
-        right = new Animation<TextureRegion>(FRAME_DURATION, rightFrames, Animation.PlayMode.LOOP);
-        left = new Animation<TextureRegion>(FRAME_DURATION, leftFrames, Animation.PlayMode.LOOP);
+        backward = new Animation<TextureRegion>(FRAME_DURATION, forwardFrames, Animation.PlayMode.LOOP);
+        forward = new Animation<TextureRegion>(FRAME_DURATION, backwardFrames, Animation.PlayMode.LOOP);
+        left = new Animation<TextureRegion>(FRAME_DURATION, rightFrames, Animation.PlayMode.LOOP);
+        right = new Animation<TextureRegion>(FRAME_DURATION, leftFrames, Animation.PlayMode.LOOP);
 
         TextureRegion firstTexture = forwardFrames.first();
         origin_x = firstTexture.getRegionWidth()  / 2;
@@ -140,49 +140,56 @@ public class GameScreen1 implements Screen {
         //player movement
         PlayerMovementHandler.movement();
 
-        if (PlayerMovementHandler.movement() == "forward") {
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
                 camera.position.y -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED_SPRINT;
-                game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
+                game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), camera.position.x - 15, camera.position.y - 80);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                elapsed_time += Gdx.graphics.getDeltaTime();
+                camera.position.y += Gdx.graphics.getDeltaTime() * PLAYER_SPEED_SPRINT;
+                game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), camera.position.x - 15, camera.position.y - 80);
+            } else if (Gdx.input.isKeyPressed((Input.Keys.A))) {
+                elapsed_time += Gdx.graphics.getDeltaTime();
+                camera.position.x -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED_SPRINT;
+                game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), camera.position.x - 15, camera.position.y - 80);
+            } else if (Gdx.input.isKeyPressed((Input.Keys.D))) {
+                elapsed_time += Gdx.graphics.getDeltaTime();
+                camera.position.x += Gdx.graphics.getDeltaTime() * PLAYER_SPEED_SPRINT;
+                game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), camera.position.x - 15, camera.position.y - 80);
             }
+            else {
+                elapsed_time += Gdx.graphics.getDeltaTime();
+                game.spriteBatch.draw(def.getKeyFrame(elapsed_time), camera.position.x - 15, camera.position.y - 80);
+            }
+        }
+
+        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
+            game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), camera.position.x - 15, camera.position.y - 80);
             camera.position.y -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
         }
-        else if (PlayerMovementHandler.movement() == "backward") {
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                elapsed_time += Gdx.graphics.getDeltaTime();
-                camera.position.y += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
-                game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
-            }
+
+        else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
+            game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), camera.position.x - 15, camera.position.y - 80);
             camera.position.y += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
         }
-        else if (PlayerMovementHandler.movement() == "right") {
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                elapsed_time += Gdx.graphics.getDeltaTime();
-                camera.position.x -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
-                game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
-            }
+
+        else if (Gdx.input.isKeyPressed((Input.Keys.A))) {
             elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
+            game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), camera.position.x - 15, camera.position.y - 80);
             camera.position.x -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
         }
-        else if (PlayerMovementHandler.movement() == "left") {
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                elapsed_time += Gdx.graphics.getDeltaTime();
-                camera.position.x += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
-                game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
-            }
+        else if (Gdx.input.isKeyPressed((Input.Keys.D))) {
             elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
+            game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), camera.position.x - 15, camera.position.y - 80);
             camera.position.x += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
         }
         else {
             elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(def.getKeyFrame(elapsed_time), camera.position.x - origin_x, camera.position.y - origin_y);
+            game.spriteBatch.draw(def.getKeyFrame(elapsed_time), camera.position.x - 15, camera.position.y - 80);
         }
 
         game.spriteBatch.end();

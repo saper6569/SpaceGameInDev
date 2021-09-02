@@ -1,96 +1,96 @@
-playerSprite.png
-size: 504, 900
+playerSprite.png.png
+size: 1560, 100
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 default
   rotate: false
   xy: 0, 0
-  size: 168, 180
-  orig: 168, 180
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
 forward
   rotate: false
-  xy: 168, 0
-  size: 168, 180
-  orig: 168, 180
+  xy: 120, 0
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
 forward
   rotate: false
-  xy: 336, 0
-  size: 168, 180
-  orig: 168, 180
+  xy: 240, 0
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
 forward
   rotate: false
-  xy: 0, 180
-  size: 168, 180
-  orig: 168, 180
+  xy: 360, 0
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
 forward
   rotate: false
-  xy: 168, 180
-  size: 168, 180
-  orig: 168, 180
+  xy: 480, 0
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
 right
   rotate: false
-  xy: 336, 180
-  size: 168, 180
-  orig: 168, 180
+  xy: 600, 0
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
 right
   rotate: false
-  xy: 0, 360
-  size: 168, 180
-  orig: 168, 180
+  xy: 720, 0
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
 left
   rotate: false
-  xy: 168, 360
-  size: 168, 180
-  orig: 168, 180
+  xy: 840, 0
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
 left
   rotate: false
-  xy: 336, 360
-  size: 168, 180
-  orig: 168, 180
+  xy: 960, 0
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
 backward
   rotate: false
-  xy: 0, 540
-  size: 168, 180
-  orig: 168, 180
+  xy: 1080, 0
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
 backward
   rotate: false
-  xy: 168, 540
-  size: 168, 180
-  orig: 168, 180
+  xy: 1200, 0
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
 backward
   rotate: false
-  xy: 336, 540
-  size: 168, 180
-  orig: 168, 180
+  xy: 1320, 0
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
 backward
   rotate: false
-  xy: 0, 720
-  size: 168, 180
-  orig: 168, 180
+  xy: 1440, 0
+  size: 120, 100
+  orig: 120, 100
   offset: 0, 0
   index: -1
