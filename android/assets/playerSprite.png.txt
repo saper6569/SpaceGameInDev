@@ -1,96 +1,96 @@
 playerSprite.png.png
-size: 1560, 100
+size: 416, 32
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 default
   rotate: false
   xy: 0, 0
-  size: 120, 100
-  orig: 120, 100
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-forward
+backward
   rotate: false
-  xy: 120, 0
-  size: 120, 100
-  orig: 120, 100
+  xy: 32, 0
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-forward
+backward
   rotate: false
-  xy: 240, 0
-  size: 120, 100
-  orig: 120, 100
+  xy: 64, 0
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-forward
+backward
   rotate: false
-  xy: 360, 0
-  size: 120, 100
-  orig: 120, 100
+  xy: 96, 0
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-forward
+backward
   rotate: false
-  xy: 480, 0
-  size: 120, 100
-  orig: 120, 100
+  xy: 128, 0
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
 right
   rotate: false
-  xy: 600, 0
-  size: 120, 100
-  orig: 120, 100
+  xy: 160, 0
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
 right
   rotate: false
-  xy: 720, 0
-  size: 120, 100
-  orig: 120, 100
+  xy: 192, 0
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
 left
   rotate: false
-  xy: 840, 0
-  size: 120, 100
-  orig: 120, 100
+  xy: 224, 0
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
 left
   rotate: false
-  xy: 960, 0
-  size: 120, 100
-  orig: 120, 100
+  xy: 256, 0
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-backward
+forward
   rotate: false
-  xy: 1080, 0
-  size: 120, 100
-  orig: 120, 100
+  xy: 288, 0
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-backward
+forward
   rotate: false
-  xy: 1200, 0
-  size: 120, 100
-  orig: 120, 100
+  xy: 320, 0
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-backward
+forward
   rotate: false
-  xy: 1320, 0
-  size: 120, 100
-  orig: 120, 100
+  xy: 352, 0
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-backward
+forward
   rotate: false
-  xy: 1440, 0
-  size: 120, 100
-  orig: 120, 100
+  xy: 384, 0
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
