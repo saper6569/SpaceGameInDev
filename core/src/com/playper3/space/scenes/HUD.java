@@ -32,7 +32,7 @@ public class HUD implements Disposable {
 
     private int hunger;
     private int hydration;
-    private float health;
+    private int health;
     private String room;
 
     Label healthL;
@@ -50,7 +50,7 @@ public class HUD implements Disposable {
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("upheaval/upheavtt.ttf"));
         fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        fontParameter.size = 3;
+        fontParameter.size = 10;
 
         font = generator.generateFont(fontParameter);
         labelStyle = new Label.LabelStyle(font, Color.BLACK);
@@ -59,7 +59,7 @@ public class HUD implements Disposable {
 
         hunger = 10;
         hydration = 10;
-        health = 20.0f;
+        health = 100;
         room = "Main";
 
 
@@ -73,7 +73,7 @@ public class HUD implements Disposable {
         hudTable.setSize(250,350);
 
         healthL = new Label (" HEALTH ", labelStyle);
-        healthLabel = new Label(String.format("%03f", health), labelStyle);
+        healthLabel = new Label(String.format("%03d", health), labelStyle);
         hungerL = new Label (" HUNGER ", labelStyle);
         hungerLabel = new Label(String.format("%02d", hunger), labelStyle);
         hydrationL = new Label (" HYDRATION ", labelStyle);
