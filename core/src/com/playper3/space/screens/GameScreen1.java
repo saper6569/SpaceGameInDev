@@ -3,7 +3,6 @@ package com.playper3.space.screens;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -12,40 +11,24 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.math.Vector2;
 import com.playper3.space.Main;
 import com.playper3.space.scenes.HUD;
+import com.playper3.space.sprites.Player;
 
 public class GameScreen1 implements Screen {
 
     private Main game;
 
-    //player variables
-    private static float FRAME_DURATION = 0.4f;
-    private static float SPRINT_FRAME_DURATION = 0.2f;
-    private float elapsed_time = 0.0f;
-    private int origin_x, origin_y;
-    private float PLAYER_SPEED = 40.0f;
-    private float PLAYER_SPEED_SPRINT = 60.0f;
+    private Player player;
 
     //game resources
-    private TextureAtlas textureAtlas;
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
 
-    private Animation<TextureRegion> def;
-    private Animation<TextureRegion> forward;
-    private Animation<TextureRegion> backward;
-    private Animation<TextureRegion> left;
-    private Animation<TextureRegion> right;
 
-    private Animation<TextureRegion> forwardSprint;
-    private Animation<TextureRegion> backwardSprint;
-    private Animation<TextureRegion> leftSprint;
-    private Animation<TextureRegion> rightSprint;
 
     private OrthographicCamera camera;
     private ExtendViewport viewport;
@@ -74,29 +57,6 @@ public class GameScreen1 implements Screen {
         hud = new HUD(game.spriteBatch);
 
         //game resources
-
-        textureAtlas = new TextureAtlas("playerSprite.png.txt");
-        Array<TextureAtlas.AtlasRegion> defaultFrames = textureAtlas.findRegions("default");
-        Array<TextureAtlas.AtlasRegion> forwardFrames = textureAtlas.findRegions("backward");
-        Array<TextureAtlas.AtlasRegion> backwardFrames = textureAtlas.findRegions("forward");
-        Array<TextureAtlas.AtlasRegion> rightFrames = textureAtlas.findRegions("right");
-        Array<TextureAtlas.AtlasRegion> leftFrames = textureAtlas.findRegions("left");
-
-        def = new Animation<TextureRegion>(FRAME_DURATION, defaultFrames, Animation.PlayMode.LOOP);
-        forward = new Animation<TextureRegion>(FRAME_DURATION, forwardFrames, Animation.PlayMode.LOOP);
-        backward = new Animation<TextureRegion>(FRAME_DURATION, backwardFrames, Animation.PlayMode.LOOP);
-        left = new Animation<TextureRegion>(FRAME_DURATION, rightFrames, Animation.PlayMode.LOOP);
-        right = new Animation<TextureRegion>(FRAME_DURATION, leftFrames, Animation.PlayMode.LOOP);
-
-        forwardSprint = new Animation<TextureRegion>(SPRINT_FRAME_DURATION, forwardFrames, Animation.PlayMode.LOOP);
-        backwardSprint = new Animation<TextureRegion>(SPRINT_FRAME_DURATION, backwardFrames, Animation.PlayMode.LOOP);
-        leftSprint = new Animation<TextureRegion>(SPRINT_FRAME_DURATION, rightFrames, Animation.PlayMode.LOOP);
-        rightSprint = new Animation<TextureRegion>(SPRINT_FRAME_DURATION, leftFrames, Animation.PlayMode.LOOP);
-
-        TextureRegion firstTexture = forwardFrames.first();
-        origin_x = firstTexture.getRegionWidth()  / 2;
-        origin_y = firstTexture.getRegionHeight() / 2;
-
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("spaceShip.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
@@ -125,6 +85,8 @@ public class GameScreen1 implements Screen {
             body.createFixture(fDef);
         }
 
+        player = new Player(world, camera);
+
     }
 
     private void stepWorld() {
@@ -146,8 +108,53 @@ public class GameScreen1 implements Screen {
 
     public void update(float dt){
         camera.update();
-        //tell our renderer to draw only what our camera can see in our game world.
+
+        playerMovement(dt);
+
+        camera.position.x = player.b2dBody.getPosition().x;
+        camera.position.y = player.b2dBody.getPosition().y;
+
+        stepWorld();
     }
+
+    public void playerMovement(float dt) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.S) && player.b2dBody.getLinearVelocity().y <= 2 * SetupVars.PPM) {
+                player.b2dBody.applyLinearImpulse(new Vector2(0, -4f * SetupVars.PPM), player.b2dBody.getWorldCenter(), true);
+            }
+            else if (Gdx.input.isKeyPressed(Input.Keys.W) && player.b2dBody.getLinearVelocity().y <= 2 * SetupVars.PPM) {
+                player.b2dBody.applyLinearImpulse(new Vector2(0f, 4f * SetupVars.PPM), player.b2dBody.getWorldCenter(), true);
+            }
+            else if (Gdx.input.isKeyPressed(Input.Keys.A) && player.b2dBody.getLinearVelocity().x <= 2 * SetupVars.PPM) {
+                player.b2dBody.applyLinearImpulse(new Vector2(-4f * SetupVars.PPM, 0), player.b2dBody.getWorldCenter(), true);
+            }
+            else if (Gdx.input.isKeyPressed(Input.Keys.D) && player.b2dBody.getLinearVelocity().x <= 2 * SetupVars.PPM) {
+                player.b2dBody.applyLinearImpulse(new Vector2(4f * SetupVars.PPM, 0), player.b2dBody.getWorldCenter(), true);
+            }
+            else {
+
+            }
+        }
+
+        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+
+        }
+
+        else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+
+        }
+
+        else if (Gdx.input.isKeyPressed((Input.Keys.A))) {
+
+        }
+        else if (Gdx.input.isKeyPressed((Input.Keys.D))) {
+
+        }
+        else {
+
+        }
+    }
+
 
     @Override
     public void render(float delta) {
@@ -166,59 +173,7 @@ public class GameScreen1 implements Screen {
         game.spriteBatch.begin();
 
         //player movement
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                elapsed_time += Gdx.graphics.getDeltaTime();
-                camera.position.y -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED_SPRINT;
-                game.spriteBatch.draw(forwardSprint.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
-            }
-            else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                elapsed_time += Gdx.graphics.getDeltaTime();
-                camera.position.y += Gdx.graphics.getDeltaTime() * PLAYER_SPEED_SPRINT;
-                game.spriteBatch.draw(backwardSprint.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
-            }
-            else if (Gdx.input.isKeyPressed((Input.Keys.A))) {
-                elapsed_time += Gdx.graphics.getDeltaTime();
-                camera.position.x -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED_SPRINT;
-                game.spriteBatch.draw(rightSprint.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
-            }
-            else if (Gdx.input.isKeyPressed((Input.Keys.D))) {
-                elapsed_time += Gdx.graphics.getDeltaTime();
-                camera.position.x += Gdx.graphics.getDeltaTime() * PLAYER_SPEED_SPRINT;
-                game.spriteBatch.draw(leftSprint.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
-            }
-            else {
-                elapsed_time += Gdx.graphics.getDeltaTime();
-                game.spriteBatch.draw(def.getKeyFrame(elapsed_time), camera.position.x - origin_x, camera.position.y - origin_y);
-            }
-        }
 
-        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(forward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
-            camera.position.y -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
-        }
-
-        else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(backward.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
-            camera.position.y += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
-        }
-
-        else if (Gdx.input.isKeyPressed((Input.Keys.A))) {
-            elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(right.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
-            camera.position.x -= Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
-        }
-        else if (Gdx.input.isKeyPressed((Input.Keys.D))) {
-            elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(left.getKeyFrame(elapsed_time, true), camera.position.x - origin_x, camera.position.y - origin_y);
-            camera.position.x += Gdx.graphics.getDeltaTime() * PLAYER_SPEED;
-        }
-        else {
-            elapsed_time += Gdx.graphics.getDeltaTime();
-            game.spriteBatch.draw(def.getKeyFrame(elapsed_time), camera.position.x - origin_x, camera.position.y - origin_y);
-        }
 
         game.spriteBatch.end();
 
@@ -226,7 +181,7 @@ public class GameScreen1 implements Screen {
         hud.stage.draw();
 
         //collisions/ physics
-        //stepWorld();
+        stepWorld();
         /*
 
         Body groundBody = world.createBody(bodyDef);
@@ -259,7 +214,6 @@ public class GameScreen1 implements Screen {
 
     @Override
     public void dispose() {
-        textureAtlas.dispose();
         world.dispose();
         map.dispose();
         mapRenderer.dispose();
