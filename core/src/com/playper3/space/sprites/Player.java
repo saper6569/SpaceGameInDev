@@ -4,13 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import com.playper3.space.screens.SetupVars;
 
 public class Player extends Sprite {
 
-    private final float PLAYER_SPEED = 40.0f;
-    private final float PLAYER_SPEED_SPRINT = 60.0f;
+    private final float PLAYER_SPEED = 0.3f;
+    private final float PLAYER_SPEED_SPRINT = 0.5f;
     private float elapsed_time = 0.0f;
     private int origin_x, origin_y;
     private final static float FRAME_DURATION = 0.4f;
@@ -56,20 +58,20 @@ public class Player extends Sprite {
         origin_y = firstTexture.getRegionHeight() / 2;
     }
 
-    public Player(World world, Camera camera) {
+    public Player(World world) {
         this.world = world;
-        definePlayer(camera);
+        definePlayer();
     }
 
-    public void definePlayer(Camera camera) {
+    public void definePlayer() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(camera.position.x, camera.position.y);
+        bodyDef.position.set(871 / SetupVars.PPM, 1415 / SetupVars.PPM);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         b2dBody = world.createBody(bodyDef);
 
         FixtureDef fixtureDef = new FixtureDef();
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(11, 13);
+        polygonShape.setAsBox(11 / SetupVars.PPM, 13 / SetupVars.PPM);
 
         fixtureDef.shape = polygonShape;
         b2dBody.createFixture(fixtureDef);
@@ -131,4 +133,41 @@ public class Player extends Sprite {
         }
     }
     */
+    public void playerMovement() {
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && b2dBody.getLinearVelocity().y >= -0.8) {
+            b2dBody.setLinearVelocity(0,-PLAYER_SPEED);
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.W) && b2dBody.getLinearVelocity().y <= 0.8) {
+            b2dBody.setLinearVelocity(0,PLAYER_SPEED);
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.A) && b2dBody.getLinearVelocity().x >= -0.8) {
+            b2dBody.setLinearVelocity(-PLAYER_SPEED,0);
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.D) && b2dBody.getLinearVelocity().x <= 0.8) {
+            b2dBody.setLinearVelocity(PLAYER_SPEED,0);
+        }
+        else {
+            b2dBody.setLinearVelocity(0,0);
+        }
+/*
+        else if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.S) && b2dBody.getLinearVelocity().y >= -1) {
+                b2dBody.applyLinearImpulse(new Vector2(0, -0.5f), b2dBody.getWorldCenter(), true);
+            }
+            else if (Gdx.input.isKeyPressed(Input.Keys.W) && b2dBody.getLinearVelocity().y <= 1) {
+                b2dBody.applyLinearImpulse(new Vector2(0f, 0.5f), b2dBody.getWorldCenter(), true);
+            }
+            else if (Gdx.input.isKeyPressed(Input.Keys.A) && b2dBody.getLinearVelocity().x >= -1) {
+                b2dBody.applyLinearImpulse(new Vector2(-0.5f, 0), b2dBody.getWorldCenter(), true);
+            }
+            else if (Gdx.input.isKeyPressed(Input.Keys.D) && b2dBody.getLinearVelocity().x <= 1) {
+                b2dBody.applyLinearImpulse(new Vector2(0.5f, 0), b2dBody.getWorldCenter(), true);
+            }
+        }
+        else {
+            //b2dBody.setLinearVelocity(new Vector2(0f, 0f));
+        }
+
+ */
+    }
 }

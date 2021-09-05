@@ -52,16 +52,16 @@ public class GameScreen1 implements Screen {
 
         //camera
         camera = new OrthographicCamera();
-        viewport = new ExtendViewport(SetupVars.WIDTH, SetupVars.HEIGHT, camera);
+        viewport = new ExtendViewport(SetupVars.WIDTH / SetupVars.PPM, SetupVars.HEIGHT / SetupVars.PPM, camera);
 
         hud = new HUD(game.spriteBatch);
 
         //game resources
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("spaceShip.tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(map);
+        mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / SetupVars.PPM);
 
-        camera.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
+        camera.position.set(viewport.getWorldWidth(), viewport.getWorldHeight(), 0);
 
         //B2D setup
         world = new World(new Vector2(0, 0), true);
@@ -77,15 +77,15 @@ public class GameScreen1 implements Screen {
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set(rectangle.getX() + rectangle.getWidth() / 2, rectangle.getY() + rectangle.getHeight() /  2);
+            bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / SetupVars.PPM, (rectangle.getY() + rectangle.getHeight() /  2) / SetupVars.PPM);
 
             body = world.createBody(bodyDef);
-            shape.setAsBox(rectangle.getWidth() / 2, rectangle.getHeight() / 2);
+            shape.setAsBox(rectangle.getWidth() / 2 / SetupVars.PPM, rectangle.getHeight() / 2 / SetupVars.PPM);
             fDef.shape = shape;
             body.createFixture(fDef);
         }
 
-        player = new Player(world, camera);
+        player = new Player(world);
 
     }
 
@@ -109,52 +109,11 @@ public class GameScreen1 implements Screen {
     public void update(float dt){
         camera.update();
 
-        playerMovement(dt);
-
         camera.position.x = player.b2dBody.getPosition().x;
         camera.position.y = player.b2dBody.getPosition().y;
 
         stepWorld();
     }
-
-    public void playerMovement(float dt) {
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-            if (Gdx.input.isKeyPressed(Input.Keys.S) && player.b2dBody.getLinearVelocity().y <= 2 * SetupVars.PPM) {
-                player.b2dBody.applyLinearImpulse(new Vector2(0, -4f * SetupVars.PPM), player.b2dBody.getWorldCenter(), true);
-            }
-            else if (Gdx.input.isKeyPressed(Input.Keys.W) && player.b2dBody.getLinearVelocity().y <= 2 * SetupVars.PPM) {
-                player.b2dBody.applyLinearImpulse(new Vector2(0f, 4f * SetupVars.PPM), player.b2dBody.getWorldCenter(), true);
-            }
-            else if (Gdx.input.isKeyPressed(Input.Keys.A) && player.b2dBody.getLinearVelocity().x <= 2 * SetupVars.PPM) {
-                player.b2dBody.applyLinearImpulse(new Vector2(-4f * SetupVars.PPM, 0), player.b2dBody.getWorldCenter(), true);
-            }
-            else if (Gdx.input.isKeyPressed(Input.Keys.D) && player.b2dBody.getLinearVelocity().x <= 2 * SetupVars.PPM) {
-                player.b2dBody.applyLinearImpulse(new Vector2(4f * SetupVars.PPM, 0), player.b2dBody.getWorldCenter(), true);
-            }
-            else {
-
-            }
-        }
-
-        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-
-        }
-
-        else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-
-        }
-
-        else if (Gdx.input.isKeyPressed((Input.Keys.A))) {
-
-        }
-        else if (Gdx.input.isKeyPressed((Input.Keys.D))) {
-
-        }
-        else {
-
-        }
-    }
-
 
     @Override
     public void render(float delta) {
@@ -173,7 +132,7 @@ public class GameScreen1 implements Screen {
         game.spriteBatch.begin();
 
         //player movement
-
+        player.playerMovement();
 
         game.spriteBatch.end();
 
@@ -182,14 +141,6 @@ public class GameScreen1 implements Screen {
 
         //collisions/ physics
         stepWorld();
-        /*
-
-        Body groundBody = world.createBody(bodyDef);
-        PolygonShape groundBox = new PolygonShape();
-        groundBox.setAsBox(camera.viewportWidth, 10.0f);
-        groundBody.createFixture(groundBox, 0.0f);
-*/
-
     }
 
     @Override
