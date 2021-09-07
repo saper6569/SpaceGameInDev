@@ -1,7 +1,7 @@
-playerSprite.png.png
+playerSprite.png
 size: 416, 32
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 default
   rotate: false
