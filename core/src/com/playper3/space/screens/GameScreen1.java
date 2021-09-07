@@ -28,7 +28,6 @@ public class GameScreen1 implements Screen {
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private TextureAtlas textureAtlas;
 
     private OrthographicCamera camera;
     private ExtendViewport viewport;
@@ -60,7 +59,6 @@ public class GameScreen1 implements Screen {
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("spaceShip.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / SetupVars.PPM);
-        textureAtlas = new TextureAtlas("playerSprite.png.txt");
 
         camera.position.set(viewport.getWorldWidth(), viewport.getWorldHeight(), 0);
 
@@ -113,6 +111,8 @@ public class GameScreen1 implements Screen {
         camera.position.x = player.b2dBody.getPosition().x;
         camera.position.y = player.b2dBody.getPosition().y;
 
+        player.updateSprite(dt);
+
         stepWorld();
     }
 
@@ -133,7 +133,8 @@ public class GameScreen1 implements Screen {
         game.spriteBatch.begin();
 
         //player movement
-        player.playerMovement(camera, game.spriteBatch);
+        player.playerMovement(delta);
+        player.draw(game.spriteBatch);
 
         game.spriteBatch.end();
 
@@ -142,10 +143,6 @@ public class GameScreen1 implements Screen {
 
         //collisions/ physics
         stepWorld();
-    }
-
-    public TextureAtlas getTextureAtlas() {
-        return textureAtlas;
     }
 
     public void TextureAtlas () {
