@@ -11,27 +11,24 @@ import com.playper3.space.screens.SetupVars;
 public class Player extends Sprite {
 
     private final float PLAYER_SPEED = 0.3f;
-    private final float PLAYER_SPEED_SPRINT = 0.6f;
+    //private final float PLAYER_SPEED_SPRINT = 0.6f;
     private float elapsed_time = 0.0f;
-    private int origin_x, origin_y;
-    private final static float FRAME_DURATION = 0.4f;
-    private final static float SPRINT_FRAME_DURATION = 0.2f;
-    public enum ANIMATION {forward, backward, left, right}
-    public ANIMATION current;
+    private final static float FRAME_DURATION = 0.55f;
+    //private final static float SPRINT_FRAME_DURATION = 0.2f;
 
-    private TextureRegion def;
-    private TextureAtlas textureAtlas;
-    private Animation<TextureRegion> forward;
-    private Animation<TextureRegion> backward;
-    private Animation<TextureRegion> left;
-    private Animation<TextureRegion> right;
+    private final TextureRegion def;
+    private final TextureAtlas textureAtlas;
+    private final Animation<TextureRegion> forward;
+    private final Animation<TextureRegion> backward;
+    private final Animation<TextureRegion> left;
+    private final Animation<TextureRegion> right;
+/*
+    private final Animation<TextureRegion> forwardSprint;
+    private final Animation<TextureRegion> backwardSprint;
+    private final Animation<TextureRegion> leftSprint;
+    private final Animation<TextureRegion> rightSprint;
 
-    private Animation<TextureRegion> forwardSprint;
-    private Animation<TextureRegion> backwardSprint;
-    private Animation<TextureRegion> leftSprint;
-    private Animation<TextureRegion> rightSprint;
-
-
+ */
     public World world;
     public Body b2dBody;
 
@@ -45,9 +42,6 @@ public class Player extends Sprite {
         setBounds(0, 0, 32 / SetupVars.PPM, 32 / SetupVars.PPM);
         setRegion(def);
 
-        origin_x = def.getRegionWidth()  / 2;
-        origin_y = def.getRegionHeight() / 2;
-
         Array<TextureAtlas.AtlasRegion> forwardFrames = textureAtlas.findRegions("backward");
         Array<TextureAtlas.AtlasRegion> backwardFrames = textureAtlas.findRegions("forward");
         Array<TextureAtlas.AtlasRegion> rightFrames = textureAtlas.findRegions("right");
@@ -57,11 +51,13 @@ public class Player extends Sprite {
         backward = new Animation<TextureRegion>(FRAME_DURATION, backwardFrames, Animation.PlayMode.LOOP);
         left = new Animation<TextureRegion>(FRAME_DURATION, rightFrames, Animation.PlayMode.LOOP);
         right = new Animation<TextureRegion>(FRAME_DURATION, leftFrames, Animation.PlayMode.LOOP);
-
+/*
         forwardSprint = new Animation<TextureRegion>(SPRINT_FRAME_DURATION, forwardFrames, Animation.PlayMode.LOOP);
         backwardSprint = new Animation<TextureRegion>(SPRINT_FRAME_DURATION, backwardFrames, Animation.PlayMode.LOOP);
         leftSprint = new Animation<TextureRegion>(SPRINT_FRAME_DURATION, rightFrames, Animation.PlayMode.LOOP);
         rightSprint = new Animation<TextureRegion>(SPRINT_FRAME_DURATION, leftFrames, Animation.PlayMode.LOOP);
+
+ */
     }
 
     public void definePlayer() {
@@ -86,7 +82,8 @@ public class Player extends Sprite {
         }
     }
 
-    public void playerMovement(float dt) {
+    public void playerMovement() {
+        /*
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 b2dBody.setLinearVelocity(0, -PLAYER_SPEED_SPRINT);
@@ -107,7 +104,8 @@ public class Player extends Sprite {
                 elapsed_time += Gdx.graphics.getDeltaTime();
             }
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+         */
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             b2dBody.setLinearVelocity(0,-PLAYER_SPEED);
             elapsed_time += Gdx.graphics.getDeltaTime();
         }
@@ -131,7 +129,7 @@ public class Player extends Sprite {
 
     public TextureRegion getFrame () {
         TextureRegion region = null;
-
+/*
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 elapsed_time += Gdx.graphics.getDeltaTime();
@@ -151,10 +149,12 @@ public class Player extends Sprite {
             }
             else {
                 elapsed_time += Gdx.graphics.getDeltaTime();
+                region = def;
             }
         }
+        */
 
-        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = forward.getKeyFrame(elapsed_time, true);
         }
@@ -174,6 +174,7 @@ public class Player extends Sprite {
         }
         else {
             elapsed_time += Gdx.graphics.getDeltaTime();
+            region = def;
         }
         return region;
     

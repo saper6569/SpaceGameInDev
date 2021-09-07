@@ -4,7 +4,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -20,23 +19,23 @@ import com.playper3.space.sprites.Player;
 
 public class GameScreen1 implements Screen {
 
-    private Main game;
+    private final Main game;
 
-    private Player player;
+    private final Player player;
 
     //game resources
-    private TmxMapLoader mapLoader;
-    private TiledMap map;
-    private OrthogonalTiledMapRenderer mapRenderer;
+    private final TmxMapLoader mapLoader;
+    private final TiledMap map;
+    private final OrthogonalTiledMapRenderer mapRenderer;
 
-    private OrthographicCamera camera;
-    private ExtendViewport viewport;
+    private final OrthographicCamera camera;
+    private final ExtendViewport viewport;
 
-    private HUD hud;
+    private final HUD hud;
 
     //B2D setup
-    private World world;
-    private Box2DDebugRenderer debugRenderer;
+    private final World world;
+    private final Box2DDebugRenderer debugRenderer;
 
     private static final float STEP_TIME = 1f / 60f;
     private static final int VELOCITY_ITERATIONS = 6;
@@ -44,7 +43,7 @@ public class GameScreen1 implements Screen {
 
     private float accumulator = 0;
 
-    private BodyDef bodyDef;
+    private final BodyDef bodyDef;
 
     public GameScreen1(Main game) {
         this.game = game;
@@ -133,7 +132,7 @@ public class GameScreen1 implements Screen {
         game.spriteBatch.begin();
 
         //player movement
-        player.playerMovement(delta);
+        player.playerMovement();
         player.draw(game.spriteBatch);
 
         game.spriteBatch.end();
