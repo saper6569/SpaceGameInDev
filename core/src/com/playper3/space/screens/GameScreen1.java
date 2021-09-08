@@ -173,7 +173,8 @@ public class GameScreen1 implements Screen {
         world.dispose();
         map.dispose();
         mapRenderer.dispose();
-        world.dispose();
         hud.dispose();
+        debugRenderer.dispose();
+
     }
 }
