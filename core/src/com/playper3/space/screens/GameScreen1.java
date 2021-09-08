@@ -110,7 +110,7 @@ public class GameScreen1 implements Screen {
         camera.position.x = player.b2dBody.getPosition().x;
         camera.position.y = player.b2dBody.getPosition().y;
 
-        player.updateSprite(dt);
+        player.updateSprite();
 
         stepWorld();
     }
