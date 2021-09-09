@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.playper3.space.screens.GameScreen1;
 import com.playper3.space.screens.SetupVars;
+import com.playper3.space.sprites.logic.PlayerLogic;
 
 public class Player extends Sprite {
 
@@ -25,6 +26,7 @@ public class Player extends Sprite {
 
     public World world;
     public Body b2dBody;
+    private PlayerLogic logic;
 
     public Player(World world, GameScreen1 screen) {
         this.world = world;
@@ -45,6 +47,8 @@ public class Player extends Sprite {
         backward = new Animation<TextureRegion>(FRAME_DURATION, backwardFrames, Animation.PlayMode.LOOP);
         left = new Animation<TextureRegion>(FRAME_DURATION, rightFrames, Animation.PlayMode.LOOP);
         right = new Animation<TextureRegion>(FRAME_DURATION, leftFrames, Animation.PlayMode.LOOP);
+
+        logic = new PlayerLogic();
     }
 
     public void definePlayer() {
@@ -73,22 +77,30 @@ public class Player extends Sprite {
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             b2dBody.setLinearVelocity(0,-PLAYER_SPEED);
             elapsed_time += Gdx.graphics.getDeltaTime();
+            logic.isMoving(true);
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             b2dBody.setLinearVelocity(0,PLAYER_SPEED);
             elapsed_time += Gdx.graphics.getDeltaTime();
+            logic.isMoving(true);
+
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             b2dBody.setLinearVelocity(-PLAYER_SPEED,0);
             elapsed_time += Gdx.graphics.getDeltaTime();
+            logic.isMoving(true);
+
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             b2dBody.setLinearVelocity(PLAYER_SPEED,0);
             elapsed_time += Gdx.graphics.getDeltaTime();
+            logic.isMoving(true);
+
         }
         else{
             b2dBody.setLinearVelocity(0, 0);
             elapsed_time += Gdx.graphics.getDeltaTime();
+            logic.isMoving(false);
         }
     }
 
