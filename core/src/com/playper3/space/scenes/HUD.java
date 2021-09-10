@@ -3,12 +3,10 @@ package com.playper3.space.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -16,6 +14,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.playper3.space.screens.SetupVars;
+import com.playper3.space.sprites.logic.PlayerLogic;
 
 public class HUD implements Disposable {
 
@@ -29,6 +28,8 @@ public class HUD implements Disposable {
 
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
+
+    private PlayerLogic logic;
 
     private int hunger;
     private int hydration;
@@ -46,6 +47,8 @@ public class HUD implements Disposable {
 
     public HUD(SpriteBatch spriteBatch) {
 
+        logic = new PlayerLogic();
+
         viewport = new ExtendViewport(SetupVars.WIDTH, SetupVars.HEIGHT, new OrthographicCamera());
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("upheaval/upheavtt.ttf"));
@@ -57,10 +60,10 @@ public class HUD implements Disposable {
 
         skin = new Skin(Gdx.files.internal("Shade_UI_Skin/shadeui/uiskin.json"));
 
-        hunger = 10;
-        hydration = 10;
-        health = 100;
-        room = "Main";
+        hunger = logic.getHunger();
+        hydration = logic.getHydration();
+        health = logic.getHealth();
+        room = logic.getRoom();
 
 
         stage = new Stage(viewport, spriteBatch);
@@ -101,6 +104,11 @@ public class HUD implements Disposable {
         table.add(hudTable);
 
         stage.addActor(table);
+    }
+
+    public void update(float dt){
+        hunger = logic.getHunger();
+        hungerLabel.setText(String.format("%02d", hunger));
     }
 
     @Override

@@ -16,12 +16,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.playper3.space.Main;
 import com.playper3.space.scenes.HUD;
 import com.playper3.space.sprites.Player;
+import com.playper3.space.sprites.logic.PlayerLogic;
 
 public class GameScreen1 implements Screen {
 
     private final Main game;
 
     private final Player player;
+
+    private final PlayerLogic logic;
 
     //game resources
     private final TmxMapLoader mapLoader;
@@ -47,6 +50,8 @@ public class GameScreen1 implements Screen {
 
     public GameScreen1(Main game) {
         this.game = game;
+
+        logic = new PlayerLogic();
 
         //camera
         camera = new OrthographicCamera();
@@ -113,6 +118,8 @@ public class GameScreen1 implements Screen {
         player.updateSprite();
 
         stepWorld();
+
+        hud.update(dt);
     }
 
     @Override
@@ -132,7 +139,7 @@ public class GameScreen1 implements Screen {
         game.spriteBatch.begin();
 
         //player movement
-        player.playerMovement();
+        player.playerMovement(delta);
         player.draw(game.spriteBatch);
 
         game.spriteBatch.end();

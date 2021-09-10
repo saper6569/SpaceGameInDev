@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import com.playper3.space.loggers.DebugLogger;
 import com.playper3.space.screens.GameScreen1;
 import com.playper3.space.screens.SetupVars;
 import com.playper3.space.sprites.logic.PlayerLogic;
@@ -12,10 +13,8 @@ import com.playper3.space.sprites.logic.PlayerLogic;
 public class Player extends Sprite {
 
     private final float PLAYER_SPEED = 0.3f;
-    //private final float PLAYER_SPEED_SPRINT = 0.6f;
     private float elapsed_time = 0.0f;
     private final static float FRAME_DURATION = 0.55f;
-    //private final static float SPRINT_FRAME_DURATION = 0.2f;
 
     private final TextureRegion def;
     private final TextureAtlas textureAtlas;
@@ -27,6 +26,7 @@ public class Player extends Sprite {
     public World world;
     public Body b2dBody;
     private PlayerLogic logic;
+    private DebugLogger logger;
 
     public Player(World world, GameScreen1 screen) {
         this.world = world;
@@ -49,6 +49,7 @@ public class Player extends Sprite {
         right = new Animation<TextureRegion>(FRAME_DURATION, leftFrames, Animation.PlayMode.LOOP);
 
         logic = new PlayerLogic();
+        logger = new DebugLogger();
     }
 
     public void definePlayer() {
@@ -73,34 +74,31 @@ public class Player extends Sprite {
         }
     }
 
-    public void playerMovement() {
+    public void playerMovement(float dt) {
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             b2dBody.setLinearVelocity(0,-PLAYER_SPEED);
             elapsed_time += Gdx.graphics.getDeltaTime();
-            logic.isMoving(true);
+            logic.isMoving(true, dt);
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             b2dBody.setLinearVelocity(0,PLAYER_SPEED);
             elapsed_time += Gdx.graphics.getDeltaTime();
-            logic.isMoving(true);
-
+            logic.isMoving(true, elapsed_time);
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             b2dBody.setLinearVelocity(-PLAYER_SPEED,0);
             elapsed_time += Gdx.graphics.getDeltaTime();
-            logic.isMoving(true);
-
+            logic.isMoving(true, elapsed_time);
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             b2dBody.setLinearVelocity(PLAYER_SPEED,0);
             elapsed_time += Gdx.graphics.getDeltaTime();
-            logic.isMoving(true);
-
+            logic.isMoving(true, elapsed_time);
         }
         else{
             b2dBody.setLinearVelocity(0, 0);
             elapsed_time += Gdx.graphics.getDeltaTime();
-            logic.isMoving(false);
+            logic.isMoving(false, elapsed_time);
         }
     }
 
@@ -111,12 +109,10 @@ public class Player extends Sprite {
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = forward.getKeyFrame(elapsed_time, true);
         }
-
         else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = backward.getKeyFrame(elapsed_time, true);
         }
-
         else if (Gdx.input.isKeyPressed((Input.Keys.A))) {
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = right.getKeyFrame(elapsed_time, true);
