@@ -1,41 +1,38 @@
 package com.playper3.space.sprites.logic;
 
-import com.badlogic.gdx.Gdx;
 import com.playper3.space.loggers.DebugLogger;
-
 import java.util.Random;
 
 public class PlayerLogic {
 
-    private int hunger;
-    private int hydration;
-    private int health;
-    private String room;
+    public int hunger = 10;
+    private int hydration = 10;
+    private int health = 100;
+    private String room = "Main";
 
-    private int count;
-    private float time;
+    private int count = 0;
+    private float time = 0;
 
     private DebugLogger logger;
 
     public PlayerLogic() {
-        hunger = 10;
-        hydration = 10;
-        health = 100;
-        room = "Main";
-
-        count = 0;
-        time = 0;
-
         logger = new DebugLogger();
     }
 
-    public void isMoving(boolean state, float dt) {
-        if (state = true) {
-            if (dt == 1) {
-                timerLogic();
-                logger.log("hi");
+    public int isMoving(boolean state) {
+        if (state == true) {
+            count++;
+            if (count == 100) {
+                Random hungerLoss = new Random();
+                int chance = 4;
+                int hungerDeduction = hungerLoss.nextInt(chance);
+                if (hungerDeduction == 1 & hunger != 0) {
+                    hunger--;
+                }
+                count = 0;
             }
         }
+        return hunger;
     }
 
     public int getHealth() {
@@ -52,13 +49,5 @@ public class PlayerLogic {
 
     public String getRoom() {
         return room;
-    }
-
-    public void timerLogic() {
-        Random hungerLoss = new Random();
-        int chance = 0;
-        //if (hungerLoss.nextInt(chance) == 1 || hunger != 0) {
-            hunger--;
-        //}
     }
 }
