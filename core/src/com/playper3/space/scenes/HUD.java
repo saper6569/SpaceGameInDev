@@ -20,22 +20,21 @@ import com.playper3.space.sprites.logic.PlayerLogic;
 public class HUD implements Disposable {
 
     public Stage stage;
-    private Viewport viewport;
+    private final Viewport viewport;
 
-    private BitmapFont font;
-    private Label.LabelStyle labelStyle;
+    private final BitmapFont font;
+    private final Label.LabelStyle labelStyle;
 
-    private Skin skin;
+    private final Skin skin;
 
-    private FreeTypeFontGenerator generator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
+    private final FreeTypeFontGenerator generator;
+    private final FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
 
-    private PlayerLogic logic;
+    private final PlayerLogic logic;
 
-    private int hunger;
-    private int hydration;
-    private int health;
-    private String room;
+    private final int hunger;
+    private final int hydration;
+    private final int health;
 
     Label healthL;
     Label healthLabel;
@@ -50,7 +49,7 @@ public class HUD implements Disposable {
         hunger = 10;
         hydration = 10;
         health = 100;
-        room = "Main";
+        String room = "Main";
 
         logic = new PlayerLogic();
 
