@@ -66,66 +66,42 @@ public class Player extends Sprite {
         b2dBody.createFixture(fixtureDef);
     }
 
-    public void updateSprite() {
+    public void updateSprite(float dt) {
         setPosition(b2dBody.getPosition().x - getWidth() / 2, b2dBody.getPosition().y - getHeight() / 2);
-        TextureRegion frame = getFrame();
+        TextureRegion frame = playerMovement(dt);
         if (frame != null) {
             setRegion(frame);
         }
     }
 
-    public void playerMovement(float dt) {
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            b2dBody.setLinearVelocity(0,-PLAYER_SPEED);
-            elapsed_time += Gdx.graphics.getDeltaTime();
-            logic.isMoving(true, dt);
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            b2dBody.setLinearVelocity(0,PLAYER_SPEED);
-            elapsed_time += Gdx.graphics.getDeltaTime();
-            logic.isMoving(true, elapsed_time);
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            b2dBody.setLinearVelocity(-PLAYER_SPEED,0);
-            elapsed_time += Gdx.graphics.getDeltaTime();
-            logic.isMoving(true, elapsed_time);
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            b2dBody.setLinearVelocity(PLAYER_SPEED,0);
-            elapsed_time += Gdx.graphics.getDeltaTime();
-            logic.isMoving(true, elapsed_time);
-        }
-        else{
-            b2dBody.setLinearVelocity(0, 0);
-            elapsed_time += Gdx.graphics.getDeltaTime();
-            logic.isMoving(false, elapsed_time);
-        }
-    }
-
-    public TextureRegion getFrame () {
+    public TextureRegion playerMovement(float dt) {
         TextureRegion region = null;
 
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            b2dBody.setLinearVelocity(0,-PLAYER_SPEED);
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = forward.getKeyFrame(elapsed_time, true);
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            b2dBody.setLinearVelocity(0,PLAYER_SPEED);
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = backward.getKeyFrame(elapsed_time, true);
         }
-        else if (Gdx.input.isKeyPressed((Input.Keys.A))) {
+        else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            b2dBody.setLinearVelocity(-PLAYER_SPEED,0);
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = right.getKeyFrame(elapsed_time, true);
         }
-        else if (Gdx.input.isKeyPressed((Input.Keys.D))) {
+        else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            b2dBody.setLinearVelocity(PLAYER_SPEED,0);
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = left.getKeyFrame(elapsed_time, true);
         }
-        else {
+        else{
+            b2dBody.setLinearVelocity(0, 0);
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = def;
         }
         return region;
-    
     }
 }
