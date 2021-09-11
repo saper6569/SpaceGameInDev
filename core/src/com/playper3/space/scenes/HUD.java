@@ -31,10 +31,10 @@ public class HUD implements Disposable {
 
     private PlayerLogic logic;
 
-    private int hunger;
-    private int hydration;
-    private int health;
-    private String room;
+    private int startHunger;
+    private int startHydration;
+    private int startHealth;
+    private String startRoom;
 
     Label healthL;
     Label healthLabel;
@@ -46,6 +46,10 @@ public class HUD implements Disposable {
     Label roomLabel;
 
     public HUD(SpriteBatch spriteBatch) {
+        startHunger = 10;
+        startHydration = 10;
+        startHealth = 100;
+        startRoom = "Main";
 
         logic = new PlayerLogic();
 
@@ -60,12 +64,6 @@ public class HUD implements Disposable {
 
         skin = new Skin(Gdx.files.internal("Shade_UI_Skin/shadeui/uiskin.json"));
 
-        hunger = logic.getHunger();
-        hydration = logic.getHydration();
-        health = logic.getHealth();
-        room = logic.getRoom();
-
-
         stage = new Stage(viewport, spriteBatch);
 
         Table table = new Table();
@@ -76,13 +74,13 @@ public class HUD implements Disposable {
         hudTable.setSize(250,350);
 
         healthL = new Label (" HEALTH ", labelStyle);
-        healthLabel = new Label(String.format("%03d", health), labelStyle);
+        healthLabel = new Label(String.format("%03d", startHealth), labelStyle);
         hungerL = new Label (" HUNGER ", labelStyle);
-        hungerLabel = new Label(String.format("%02d", hunger), labelStyle);
+        hungerLabel = new Label(String.format("%02d", startHealth), labelStyle);
         hydrationL = new Label (" HYDRATION ", labelStyle);
-        hydrationLabel = new Label(String.format("%02d", hydration), labelStyle);
+        hydrationLabel = new Label(String.format("%02d", startHydration), labelStyle);
         roomL = new Label (" ROOM ", labelStyle);
-        roomLabel = new Label (room, labelStyle);
+        roomLabel = new Label (startRoom, labelStyle);
 
         hudTable.setBackground(skin.getDrawable("dialogDim"));
         hudTable.add(healthL).padTop(10);
@@ -107,8 +105,14 @@ public class HUD implements Disposable {
     }
 
     public void update(float dt){
-        hunger = logic.getHunger();
+        int hunger = logic.getHunger();
+//        int hydration = logic.getHydration();
+//        int health = logic.getHealth();
+//        String room = logic.getRoom();
         hungerLabel.setText(String.format("%02d", hunger));
+//        hydrationLabel.setText(String.format("%02d", hydration));
+//        healthLabel.setText(String.format("%03d", health));
+//        roomLabel.setText(room);
     }
 
     @Override
