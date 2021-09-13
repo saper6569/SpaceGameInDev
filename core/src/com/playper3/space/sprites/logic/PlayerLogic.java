@@ -6,21 +6,20 @@ import java.util.Random;
 public class PlayerLogic {
 
     public int hunger = 10;
-    private int hydration = 10;
-    private int health = 100;
-    private String room = "Main";
+    private final int hydration = 10;
+    private final int health = 100;
+    private final String room = "Main";
 
     private int count = 0;
-    private float time = 0;
 
-    private DebugLogger logger;
+    private final DebugLogger logger;
 
     public PlayerLogic() {
         logger = new DebugLogger();
     }
 
     public int isMoving(boolean state) {
-        if (state == true) {
+        if (state) {
             count++;
             if (count == 100) {
                 Random hungerLoss = new Random();

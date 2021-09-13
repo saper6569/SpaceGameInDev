@@ -20,21 +20,10 @@ import com.playper3.space.sprites.logic.PlayerLogic;
 public class HUD implements Disposable {
 
     public Stage stage;
-    private final Viewport viewport;
-
-    private final BitmapFont font;
-    private final Label.LabelStyle labelStyle;
 
     private final Skin skin;
 
-    private final FreeTypeFontGenerator generator;
-    private final FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
-
     private final PlayerLogic logic;
-
-    private final int hunger;
-    private final int hydration;
-    private final int health;
 
     Label healthL;
     Label healthLabel;
@@ -46,21 +35,21 @@ public class HUD implements Disposable {
     Label roomLabel;
 
     public HUD(SpriteBatch spriteBatch) {
-        hunger = 10;
-        hydration = 10;
-        health = 100;
+        int hunger = 10;
+        int hydration = 10;
+        int health = 100;
         String room = "Main";
 
         logic = new PlayerLogic();
 
-        viewport = new ExtendViewport(SetupVars.WIDTH, SetupVars.HEIGHT, new OrthographicCamera());
+        Viewport viewport = new ExtendViewport(SetupVars.WIDTH, SetupVars.HEIGHT, new OrthographicCamera());
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("upheaval/upheavtt.ttf"));
-        fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("upheaval/upheavtt.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         fontParameter.size = 10;
 
-        font = generator.generateFont(fontParameter);
-        labelStyle = new Label.LabelStyle(font, Color.BLACK);
+        BitmapFont font = generator.generateFont(fontParameter);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
 
         skin = new Skin(Gdx.files.internal("Shade_UI_Skin/shadeui/uiskin.json"));
 
