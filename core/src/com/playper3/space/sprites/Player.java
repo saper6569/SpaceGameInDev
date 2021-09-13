@@ -25,8 +25,8 @@ public class Player extends Sprite {
 
     public World world;
     public Body b2dBody;
-    private PlayerLogic logic;
-    private DebugLogger logger;
+    private final PlayerLogic logic;
+    private final DebugLogger logger;
 
     public Player(World world, GameScreen1 screen) {
         this.world = world;

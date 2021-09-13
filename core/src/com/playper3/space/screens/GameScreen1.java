@@ -182,6 +182,5 @@ public class GameScreen1 implements Screen {
         mapRenderer.dispose();
         hud.dispose();
         debugRenderer.dispose();
-
     }
 }
