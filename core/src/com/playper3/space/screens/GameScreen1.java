@@ -151,10 +151,6 @@ public class GameScreen1 implements Screen {
         stepWorld();
     }
 
-    public void TextureAtlas () {
-
-    }
-
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
