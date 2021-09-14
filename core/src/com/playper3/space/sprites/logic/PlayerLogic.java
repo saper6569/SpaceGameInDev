@@ -21,9 +21,9 @@ public class PlayerLogic {
     public int isMoving(boolean state) {
         if (state) {
             count++;
-            if (count == 100) {
+            if (count == 600) {
                 Random hungerLoss = new Random();
-                int chance = 4;
+                int chance = 2;
                 int hungerDeduction = hungerLoss.nextInt(chance);
                 if (hungerDeduction == 1 & hunger != 0) {
                     hunger--;

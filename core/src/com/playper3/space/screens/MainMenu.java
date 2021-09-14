@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.playper3.space.Main;
+import com.playper3.space.managers.AssetManagers;
 
 public class MainMenu implements Screen {
 
@@ -36,6 +37,7 @@ public class MainMenu implements Screen {
     private ExtendViewport viewport;
 
     private Main game;
+    public AssetManagers manager = new AssetManagers();
 
     @Override
     public void show() {
@@ -44,8 +46,11 @@ public class MainMenu implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         //resource instances
-        playTexture = new Texture("testButton.png");
-        menuSong = Gdx.audio.newMusic(Gdx.files.internal("C418 - 0x10c.mp3"));
+        manager.mainMenuAssets();
+        manager.assetManager.finishLoading();
+
+        playTexture = manager.assetManager.get(manager.menuButton1, Texture.class);
+        menuSong = manager.assetManager.get(manager.mainMenuSong, Music.class);
 
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(SetupVars.WIDTH, SetupVars.HEIGHT, camera);
@@ -131,6 +136,6 @@ public class MainMenu implements Screen {
         stage.dispose();
         playTexture.dispose();
         menuSong.dispose();
-
+        manager.assetManager.dispose();
     }
 }

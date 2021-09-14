@@ -32,7 +32,7 @@ public class Player extends Sprite {
         this.world = world;
         definePlayer();
 
-        textureAtlas = new TextureAtlas("playerSprite.txt");
+        textureAtlas = new TextureAtlas("Sprites/playerSprite.txt");
 
         def = new TextureRegion(textureAtlas.findRegion("default"));
         setBounds(0, 0, 32 / SetupVars.PPM, 32 / SetupVars.PPM);

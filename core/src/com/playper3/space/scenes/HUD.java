@@ -44,14 +44,14 @@ public class HUD implements Disposable {
 
         Viewport viewport = new ExtendViewport(SetupVars.WIDTH, SetupVars.HEIGHT, new OrthographicCamera());
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("upheaval/upheavtt.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/upheavtt.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         fontParameter.size = 10;
 
         BitmapFont font = generator.generateFont(fontParameter);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
 
-        skin = new Skin(Gdx.files.internal("Shade_UI_Skin/shadeui/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("Skins/uiskin.json"));
 
         stage = new Stage(viewport, spriteBatch);
 

@@ -61,7 +61,7 @@ public class GameScreen1 implements Screen {
 
         //game resources
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("spaceShip.tmx");
+        map = mapLoader.load("GameScreen1/spaceShip.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / SetupVars.PPM);
 
         camera.position.set(viewport.getWorldWidth(), viewport.getWorldHeight(), 0);
