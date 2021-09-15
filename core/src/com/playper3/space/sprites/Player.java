@@ -16,6 +16,7 @@ public class Player extends Sprite {
     private float elapsed_time = 0.0f;
     private final static float FRAME_DURATION = 0.55f;
 
+    TextureRegion region = null;
     private final TextureRegion def;
     private final TextureAtlas textureAtlas;
     private final Animation<TextureRegion> forward;
@@ -75,27 +76,32 @@ public class Player extends Sprite {
     }
 
     public TextureRegion playerMovement(float dt) {
-        TextureRegion region = null;
-
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             b2dBody.setLinearVelocity(0,-PLAYER_SPEED);
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = forward.getKeyFrame(elapsed_time, true);
+            logic.coordinates('Y', -1);
+
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             b2dBody.setLinearVelocity(0,PLAYER_SPEED);
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = backward.getKeyFrame(elapsed_time, true);
+            logic.coordinates('Y', 1);
+
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             b2dBody.setLinearVelocity(-PLAYER_SPEED,0);
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = right.getKeyFrame(elapsed_time, true);
+            logic.coordinates('X', -1);
+
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             b2dBody.setLinearVelocity(PLAYER_SPEED,0);
             elapsed_time += Gdx.graphics.getDeltaTime();
             region = left.getKeyFrame(elapsed_time, true);
+            logic.coordinates('X', -1);
         }
         else{
             b2dBody.setLinearVelocity(0, 0);

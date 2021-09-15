@@ -5,6 +5,9 @@ import java.util.Random;
 
 public class PlayerLogic {
 
+    private int X_COORD = 12;
+    private int Y_COORD = 12;
+
     public int hunger = 10;
     private final int hydration = 10;
     private final int health = 100;
@@ -32,6 +35,11 @@ public class PlayerLogic {
             }
         }
         return hunger;
+    }
+
+    public void coordinates(char plane, float step) {
+
+
     }
 
     public int getHealth() {
