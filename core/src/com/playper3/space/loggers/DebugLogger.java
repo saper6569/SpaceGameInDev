@@ -34,15 +34,16 @@ public class DebugLogger {
 
     public String reader(String file, int line) {
         String lineString = String.format("%03d", line);
+        String outPut = "";
         Scanner logReader = new Scanner(file);
         String currentLine = "";
         while (currentLine != lineString) {
             currentLine = logReader.nextLine();
         }
         if (currentLine == lineString) {
-            currentLine = logReader.nextLine();
+            outPut = logReader.nextLine();
         }
-        return currentLine;
+        return outPut;
     }
 }
 
