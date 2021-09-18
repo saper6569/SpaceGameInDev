@@ -38,8 +38,12 @@ public class PlayerLogic {
     }
 
     public void coordinates(char plane, float step) {
-
-
+        if (plane == 'x') {
+            X_COORD += step;
+        }
+        else if (plane == 'y') {
+            Y_COORD += step;
+        }
     }
 
     public int getHealth() {
